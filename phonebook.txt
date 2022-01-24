@@ -1,2 +1,0 @@
-{"last_id": 1, "contacts": [{"first_name": "hamid", "last_name": "eini", "phone": ["09197503066", "09125411276"]}]}
-{"last_id": 1, "contacts": [{"first_name": "ali", "last_name": "ahmadi", "phone": ["09123457896", ""]}]}

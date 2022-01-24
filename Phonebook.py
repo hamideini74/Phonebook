@@ -10,25 +10,42 @@ class Storage:
         # self.phone = phone
 
     def save(self, fname, lname, phone1, phone2='none'):
-        phone_dict = {'last_id': 1,'contacts': [{'first_name': fname, 'last_name': lname, 'phone': [phone1, phone2]}]}
-        json_phone = json.dumps(phone_dict)
-        with open('phonebook.txt', 'a') as f:
+        with open('phonebook.json', 'r+') as f:
+            data = json.loads(f.read())
+            id = data['last_id']
+            phone_dict = {'first_name': fname, 'last_name': lname, 'phone': [phone1, phone2], 'id': id}
+            data['contacts'].append(phone_dict)
+            data['last_id'] += 1
+        json_phone = json.dumps(data)
+        with open('phonebook.json', 'w') as f:
             f.write(json_phone)
             f.write('\n')
 
     def load(self, name):
-        f = open('phonebook.txt', "r+")
+        f = open('phonebook.json', "r+")
         contents = f.readlines()
         found = False
 
         for line in contents:
-            if name in line:
-                print(f"Your Required Contact Record is: {line}")
+            data = json.loads(line)
+            if data['contacts'] == name:
+                print(data['last_id'])
+                print(data['contacts'])
                 found = True
 
         if found == False:
             print(f"There's no contact Record in Phonebook with name = {name}")
         f.close()
+
+    def delete(self, name):
+        f = open('phonebook.json', "r+")
+        data = json.loads(f.read())
+        thisdict = data['contacts']
+        for contact in thisdict:
+            if contact['first_name'] == name:
+                thisdict.remove(contact)
+
+
 
 
 storage = Storage()
@@ -64,21 +81,18 @@ def creat_new_contact():
 
 
 def show():
-    with open('phonebook.txt', 'r') as f:
+    with open('phonebook.json', 'r') as f:
         print(f.read())
 
 
 def delete():
-    contact = input('contact name: ')
-    f = open('phonebook.txt', 'r+')
-    lines = f.readlines()
-    for line in lines:
-        if contact.title() in lines:
-            f.write(line)
+    name = input('contact name: ')
+    storage.delete(name)
+
 
 
 def search():
-    name = input("Enter name for Searching: ").title()
+    name = input("Enter name for Searching: ")
     storage.load(name)
 
 
