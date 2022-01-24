@@ -43,6 +43,11 @@ class Storage:
         for contact in thisdict:
             if contact['first_name'] == fname and contact['last_name'] == lname:
                 thisdict.remove(contact)
+                json_phone = json.dumps(data)
+                with open('phonebook.json', 'w') as f:
+                    f.write(json_phone)
+                    f.write('\n')
+
         f.close()
 
 
@@ -95,6 +100,3 @@ def search():
 
 
 phone_book()
-
-# import os
-# os.system('cls')
