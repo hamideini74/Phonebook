@@ -1,13 +1,34 @@
-class Storage:
-    def __init__(self, fname='none', lname='none', phone='none'):
-        self.fname = fname
-        self.lname = lname
-        self.phone = phone
+import json
 
-    def save(self, fname, lname, phone):
+
+class Storage:
+
+    def __init__(self):
+        pass
+        # self.fname = fname
+        # self.lname = lname
+        # self.phone = phone
+
+    def save(self, fname, lname, phone1, phone2='none'):
+        phone_dict = {'last_id': 1,'contacts': [{'first_name': fname, 'last_name': lname, 'phone': [phone1, phone2]}]}
+        json_phone = json.dumps(phone_dict)
         with open('phonebook.txt', 'a') as f:
-            f.write(f'{fname.title()} {lname} | phone: {phone}')
+            f.write(json_phone)
             f.write('\n')
+
+    def load(self, name):
+        f = open('phonebook.txt', "r+")
+        contents = f.readlines()
+        found = False
+
+        for line in contents:
+            if name in line:
+                print(f"Your Required Contact Record is: {line}")
+                found = True
+
+        if found == False:
+            print(f"There's no contact Record in Phonebook with name = {name}")
+        f.close()
 
 
 storage = Storage()
@@ -37,9 +58,9 @@ def phone_book():
 def creat_new_contact():
     fname = input('first name > ')
     lname = input('last name > ')
-    phone = input('phone number > ')
-    storage.save(fname, lname, phone)
-
+    phone1 = input('phone number 1> ')
+    phone2 = input('phone number 2> ')
+    storage.save(fname, lname, phone1, phone2)
 
 
 def show():
@@ -58,18 +79,7 @@ def delete():
 
 def search():
     name = input("Enter name for Searching: ").title()
-    f = open('phonebook.txt', "r+")
-    contents = f.readlines()
-    found = False
-
-    for line in contents:
-        if name in line:
-            print(f"Your Required Contact Record is: {line}")
-            found = True
-
-    if found == False:
-        print(f"There's no contact Record in Phonebook with name = {name}")
-    f.close()
+    storage.load(name)
 
 
 phone_book()
