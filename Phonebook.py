@@ -23,41 +23,39 @@ class Storage:
 
     def load(self, name):
         f = open('phonebook.json', "r+")
-        contents = f.readlines()
         found = False
 
-        for line in contents:
-            data = json.loads(line)
-            if data['contacts'] == name:
-                print(data['last_id'])
-                print(data['contacts'])
-                found = True
+        data = json.loads(f.read())
+        thisdict = data['contacts']
+        for contact in thisdict:
+            if contact['first_name'] == name:
+                print(contact)
+            found = True
 
         if found == False:
             print(f"There's no contact Record in Phonebook with name = {name}")
         f.close()
 
-    def delete(self, name):
+    def delete(self, fname, lname):
         f = open('phonebook.json', "r+")
         data = json.loads(f.read())
         thisdict = data['contacts']
         for contact in thisdict:
-            if contact['first_name'] == name:
+            if contact['first_name'] == fname and contact['last_name'] == lname:
                 thisdict.remove(contact)
-
-
+        f.close()
 
 
 storage = Storage()
 
 
 def phone_book():
-    print('Enter "1" --> Display your contacts \n'
-          'Enter "2" --> Creat new contact \n'
-          'Enter "3" --> search your contact \n'
-          'Enter "4" --> Delete your contact \n'
-          'Enter "5" --> Quit')
     while True:
+        print('Enter "1" --> Display your contacts \n'
+              'Enter "2" --> Creat new contact \n'
+              'Enter "3" --> search your contact \n'
+              'Enter "4" --> Delete your contact \n'
+              'Enter "5" --> Quit')
         num = input('your choice -> ')
 
         if num == '1':
@@ -86,9 +84,9 @@ def show():
 
 
 def delete():
-    name = input('contact name: ')
-    storage.delete(name)
-
+    fname = input('contact first name: ')
+    lname = input('contact last name: ')
+    storage.delete(fname, lname)
 
 
 def search():
