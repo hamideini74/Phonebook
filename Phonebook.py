@@ -1,4 +1,4 @@
-import json, re, texttable
+import re, json, texttable
 
 
 class Storage:
@@ -19,7 +19,7 @@ class Storage:
             for contact in thisdict:
                 table.add_rows([['id', 'first name', 'last name', 'phone'],
                                 [contact['id'], contact['first_name'], contact['last_name'], contact['phone']]])
-            print(table.draw())
+            return table.draw()
 
     def save(self, fname, lname, lst):
         with open('phonebook.json', 'r+') as f:
@@ -50,9 +50,9 @@ class Storage:
                     found = True
 
             if found == False:
-                print(f"There's no contact Record in Phonebook with name = {search_contact}")
+                return f"There's no contact Record in Phonebook with name = {search_contact}"
             # table_draw = table.draw()
-            print(table.draw())
+            return table.draw()
 
     def delete(self, fname, lname):
         f = open('phonebook.json', "r+")
@@ -65,7 +65,7 @@ class Storage:
                 with open('phonebook.json', 'w') as f:
                     f.write(json_phone)
                     f.write('\n')
-                    return 'successfully'
+                    return 'Delete contact successfully!'
 
         f.close()
 
@@ -121,15 +121,18 @@ def creat_new_contact(fname, lname, lst):
 
 
 def show():
-    storage.contact_list()
+    table = storage.contact_list()
+    print(table)
 
 
 def delete(fname, lname):
-    storage.delete(fname, lname)
+    delete = storage.delete(fname, lname)
+    print(delete)
 
 
 def search(search_contact):
-    storage.load(search_contact)
+    search = storage.load(search_contact)
+    print(search)
 
 
 phone_book()
