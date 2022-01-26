@@ -1,5 +1,6 @@
 import json, texttable
 
+
 class Visit:
     def __init__(self):
         pass
@@ -25,12 +26,15 @@ class Visit:
             table.set_cols_align(['l', 'c', 'c', 'r'])
             table.set_cols_valign(['t', 'm', 'm', 'b'])
             for contact in thisdict:
-                if contact['first_name'] == search_contact or contact['last_name'] == search_contact or \
-                        contact['phone'][0] == search_contact:
+                if search_contact in contact['first_name'] or search_contact in contact['last_name']:
+                    table.add_rows([['id', 'first name', 'last name', 'phone'],
+                                    [contact['id'], contact['first_name'], contact['last_name'], contact['phone']]])
+                    found = True
+                elif any(search_contact in s for s in contact['phone']):
                     table.add_rows([['id', 'first name', 'last name', 'phone'],
                                     [contact['id'], contact['first_name'], contact['last_name'], contact['phone']]])
                     found = True
 
             if found == False:
-                return f"There's no contact Record in Phonebook with name = {search_contact}"
+                return f"There's no contact Record in Phonebook: {search_contact}"
             return table.draw()
