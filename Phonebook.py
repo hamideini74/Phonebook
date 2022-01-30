@@ -3,13 +3,12 @@ from visualizer import Visualizer
 from storage import Storage
 from edit import Edit
 
-
 storage = Storage()
 visit = Visualizer()
 edit = Edit()
 
+
 def phone_book():
-    global lst
     while True:
         print('Enter "1" --> Display your contacts \n'
               'Enter "2" --> Creat new contact \n'
@@ -61,24 +60,6 @@ def phone_book():
             break
 
 
-def editt(id):
-    edit.edit(id)
-
-
-
-
-
-def creat_new_contact(fname, lname, lst):
-    with open('phonebook.json', 'r+') as f:
-        data = json.loads(f.read())
-        thisdict = data['contacts']
-        for contact in thisdict:
-            if contact['first_name'] == fname and contact['last_name'] == lname:
-                print('These contact have already been registered')
-        else:
-            storage.save(fname, lname, lst)
-
-
 def show():
     with open('phonebook.json', 'r+') as f:
         data = json.loads(f.read())
@@ -90,9 +71,15 @@ def show():
         print(table.draw())
 
 
-def delete(name):
-    delete = storage.delete(name)
-    print(delete)
+def creat_new_contact(fname, lname, lst):
+    with open('phonebook.json', 'r+') as f:
+        data = json.loads(f.read())
+        thisdict = data['contacts']
+        for contact in thisdict:
+            if contact['first_name'] == fname and contact['last_name'] == lname:
+                print('These contact have already been registered')
+        else:
+            storage.save(fname, lname, lst)
 
 
 def search(search_contact):
@@ -116,9 +103,13 @@ def search(search_contact):
             return f"There's no contact Record in Phonebook: {search_contact}"
 
 
+def delete(name):
+    delete = storage.delete(name)
+    print(delete)
 
 
-
+def editt(id):
+    edit.edit(id)
 
 
 phone_book()

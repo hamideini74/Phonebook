@@ -22,12 +22,11 @@ class Edit:
                             lst.append(phone)
                         elif phone == '-':
                             break
-                    contact['phone']=lst
-        thisdict[int(id)-1] = contact
+                    contact['phone'] = lst
+        thisdict[int(id) - 1] = contact
         json_phone = json.dumps(data)
         with open('phonebook.json', 'w') as f:
             f.write(json_phone)
             f.write('\n')
         print(contact)
         print('Edit contact successfully!')
-
